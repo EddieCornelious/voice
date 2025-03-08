@@ -20,16 +20,7 @@ function speak(text) {
   speaker.speak(utterance);
 }
 
-
-
-function stopAudio(stream) {
-  stream.getTracks().forEach((track) => {
-    if (track.readyState == "live" && track.kind === "audio") {
-      track.stop();
-    }
-  });
-}
-let mediaRecorder;
+var mediaRecorder;
 async function setupListener() {
   navigator.mediaDevices
     .getUserMedia({ audio: true })
@@ -58,13 +49,13 @@ async function setupListener() {
 }
 
     function listen(){
-
+       mediaRecorder.start();
       setTimeout(() => {
         console.log("3sec");
         mediaRecorder.stop();
       }, 3000);
       
-      mediaRecorder.start();
+     
 
 
     }
