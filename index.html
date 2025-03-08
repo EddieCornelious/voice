@@ -20,9 +20,7 @@ function speak(text) {
   speaker.speak(utterance);
 }
 
-document.querySelectorAll("#ai")[0].addEventListener("click", (e) => {
-  listen();
-});
+
 
 function stopAudio(stream) {
   stream.getTracks().forEach((track) => {
@@ -31,18 +29,13 @@ function stopAudio(stream) {
     }
   });
 }
-
-function listen() {
+let mediaRecorder;
+async function setupListener() {
   navigator.mediaDevices
     .getUserMedia({ audio: true })
     .then((stream) => {
-      let mediaRecorder = new MediaRecorder(stream);
-      setTimeout(() => {
-        console.log("3sec");
-        mediaRecorder.stop();
-      }, 3000);
       let audioChunks = [];
-      mediaRecorder.start();
+      mediaRecorder = new MediaRecorder(stream);
 
       mediaRecorder.ondataavailable = (event) => {
         console.log("writing");
@@ -56,15 +49,29 @@ function listen() {
         console.log(audioUrl);
       };
 
-      mediaRecorder.start();
-      // To stop recording:
-      // mediaRecorder.stop();
-      console.log("in here");
+     
+      
     })
     .catch((error) => {
       // Handle errors, like no microphone or permission denied.
     });
 }
+
+    function listen(){
+
+      setTimeout(() => {
+        console.log("3sec");
+        mediaRecorder.stop();
+      }, 3000);
+      
+      mediaRecorder.start();
+
+
+    }
+
+    document.querySelectorAll("#ai")[0].addEventListener("click", (e) => {
+  setupListener().then(a=>listen());
+});
 
   </script>
   </body>
