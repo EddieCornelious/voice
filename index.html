@@ -1,1 +1,73 @@
-<button id="ai">speak</button>
+<html>
+  <body>
+    <button id="ai">speak</button>
+
+    
+  </body>
+  <script>
+
+    
+function speak(text) {
+  const speaker = window.speechSynthesis;
+  const voice = speaker.getVoices()[0];
+  const utterance = new SpeechSynthesisUtterance(
+    "hi bro what is good broo lol why"
+  );
+
+  utterance.lang = "en-US";
+  utterance.voice = voice;
+  console.log(utterance);
+  speaker.speak(utterance);
+}
+
+document.querySelectorAll("#ai")[0].addEventListener("click", (e) => {
+  listen();
+});
+
+function stopAudio(stream) {
+  stream.getTracks().forEach((track) => {
+    if (track.readyState == "live" && track.kind === "audio") {
+      track.stop();
+    }
+  });
+}
+
+function listen() {
+  navigator.mediaDevices
+    .getUserMedia({ audio: true })
+    .then((stream) => {
+      let mediaRecorder = new MediaRecorder(stream);
+      setTimeout(() => {
+        console.log("3sec");
+        mediaRecorder.stop();
+      }, 3000);
+      let audioChunks = [];
+      mediaRecorder.start();
+
+      mediaRecorder.ondataavailable = (event) => {
+        console.log("writing");
+        audioChunks.push(event.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        // Use audioUrl for playback or download
+        console.log(audioUrl);
+      };
+
+      mediaRecorder.start();
+      // To stop recording:
+      // mediaRecorder.stop();
+      console.log("in here");
+    })
+    .catch((error) => {
+      // Handle errors, like no microphone or permission denied.
+    });
+}
+
+  </script>
+  
+  
+</html>
+
