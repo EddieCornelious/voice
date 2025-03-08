@@ -59,9 +59,11 @@ async function setupListener() {
 
 
     }
+    setupListener()
 
     document.querySelectorAll("#ai")[0].addEventListener("click", (e) => {
-  setupListener().then(a=>listen());
+      listen();
+  
 });
 
   </script>
