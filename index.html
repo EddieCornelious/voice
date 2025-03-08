@@ -48,7 +48,7 @@ async function setupListener() {
     });
 }
 
-    function listen(){
+    function listen(mediaRecorder){
        mediaRecorder.start();
       setTimeout(() => {
         console.log("3sec");
@@ -62,7 +62,7 @@ async function setupListener() {
     setupListener()
 
     document.querySelectorAll("#ai")[0].addEventListener("click", (e) => {
-      listen();
+      listen(mediaRecorder);
   
 });
 
