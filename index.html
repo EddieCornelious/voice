@@ -20,13 +20,13 @@ function speak(text) {
   speaker.speak(utterance);
 }
 
-var mediaRecorder;
+
 async function setupListener() {
   navigator.mediaDevices
     .getUserMedia({ audio: true })
     .then((stream) => {
       let audioChunks = [];
-      mediaRecorder = new MediaRecorder(stream);
+      let mediaRecorder = new MediaRecorder(stream);
 
       mediaRecorder.ondataavailable = (event) => {
         console.log("writing");
@@ -40,6 +40,12 @@ async function setupListener() {
         console.log(audioUrl);
       };
 
+      mediaRecorder.start();
+      setTimeout(() => {
+        console.log("3sec");
+        mediaRecorder.stop();
+      }, 3000);
+
      
       
     })
@@ -48,21 +54,13 @@ async function setupListener() {
     });
 }
 
-    function listen(mediaRecorder){
-       mediaRecorder.start();
-      setTimeout(() => {
-        console.log("3sec");
-        mediaRecorder.stop();
-      }, 3000);
-      
-     
-
-
-    }
-    setupListener()
+   
+   
 
     document.querySelectorAll("#ai")[0].addEventListener("click", (e) => {
-      listen(mediaRecorder);
+
+      setupListener()
+     
   
 });
 
