@@ -34,10 +34,17 @@ async function setupListener() {
       };
 
       mediaRecorder.onstop = () => {
+         stream.getTracks().forEach((track) => {
+        if (track.readyState == 'live' && track.kind === 'audio') {
+            track.stop();
+        }
+    });
         const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
         const audioUrl = URL.createObjectURL(audioBlob);
         // Use audioUrl for playback or download
         console.log(audioUrl);
+     const audio = new Audio(audioUrl);
+     audio.play();
       };
 
       mediaRecorder.start();
